@@ -10,7 +10,10 @@ public class Vaca extends Animal {
 	
 	//----Metodos----//
 	
-	
+	public void listarVaca() {
+		System.out.println("vaca: " + this.getNombre() + " " + this.getPeso() + " kg " 
+	+ this.getEdad() + " anyos  uso:" + this.uso);
+	}
 	
 	//----Constructores----//
 	

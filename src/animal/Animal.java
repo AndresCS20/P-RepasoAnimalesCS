@@ -8,7 +8,7 @@ public class Animal {
 	private double peso=0.0;
 	private int edad=0;
 	private boolean estado=false; // True Vivo && Falso Muerto
-
+	public static int numAnimales=7;
 
 	//----Metodos----//
 
@@ -59,5 +59,15 @@ public class Animal {
 	public void setEstado(boolean estado) {
 		this.estado = estado;
 	}
+
+	public static int getNumAnimales() {
+		return numAnimales;
+	}
+
+	public static void setNumAnimales(int numAnimales) {
+		Animal.numAnimales = numAnimales;
+	}
+	
+	
 
 }

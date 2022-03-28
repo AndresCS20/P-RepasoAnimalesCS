@@ -10,7 +10,10 @@ public class Oveja extends Animal {
 	
 	//----Metodos----//
 	
-	
+	public void listarOveja() {
+		System.out.println("oveja: " + this.getNombre() + " " + this.getPeso() + " kg " 
+	+ this.getEdad() + " anyos  uso:" + this.tipoPelo);
+	}
 	
 	//----Constructores----//
 	
