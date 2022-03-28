@@ -9,6 +9,13 @@ public class Oveja extends Animal {
 
 	
 	//----Metodos----//
+	@Override
+	public String toString() {
+		return "oveja: " + this.getNombre() + " " + this.getPeso() + " kg " 
+				+ this.getEdad() + " anyos  tipo de pelo: " + this.tipoPelo;
+	}	
+	
+	
 	
 	public void listarOveja() {
 		System.out.println("oveja: " + this.getNombre() + " " + this.getPeso() + " kg " 

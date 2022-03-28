@@ -75,6 +75,8 @@ public class Principal {
 				for (int i = 0; i < animales.length; i++) {
 					if (animales[i].isEstado()) {
 					System.out.println(animales[i]);
+
+
 					}
 				}
 		}
@@ -320,6 +322,7 @@ public class Principal {
 		for (int i = 0; i < animales.length; i++) {
 			if (animales[i].isEstado()) {
 			System.out.println(animales[i]);
+			System.out.println(animales[i].getNombre() + ": peso:" + animales[i].getPeso() + ", edad:" + animales[i].getEdad());
 			}
 		}
 }
@@ -350,4 +353,6 @@ public class Principal {
 		return decimal;
 	}
 	
+	
+
 }

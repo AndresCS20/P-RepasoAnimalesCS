@@ -11,10 +11,13 @@ public class Cerdo extends Animal {
 	
 	//----Metodos----//
 	
-	public void listarCerdo() {
-		System.out.println("cerdo: " + this.getNombre() + " " + this.getPeso() + " kg " 
-	+ this.getEdad() + " anyos  color piel:" + this.colorPelaje);
-	}
+	@Override
+	public String toString() {
+		return "cerdo: " + this.getNombre() + " " + this.getPeso() + " kg " 
+				+ this.getEdad() + " anyos  color piel: " + this.colorPelaje;
+	}	
+	
+
 	
 	//----Constructores----//
 	
