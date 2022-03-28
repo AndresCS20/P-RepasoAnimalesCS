@@ -91,10 +91,61 @@ public class Principal {
 
 				break;
 			case 2:
-				System.out.println("HAS ELEGIDO LA OPCIÓN 3");
+				System.out.println("[3] SUMAR ANYO A UN ANIMAL");
+				for (int i=0; i<animales.length; i++) {
+					
+					if (animales[i].isEstado()) {
+						System.out.println((i+1)+".-"+animales[i].getNombre() + " edad: "+animales[i].getEdad());
+					}
+					
+				}
+				
+				while (true) {
+					
+					do {
+					System.out.println("Elija el animal");
+					opcion = introducirNumero(opcion);
+					}while(opcion<1 || opcion>animales.length);
+					
+					if (animales[opcion - 1].isEstado()) {
+						break;
+					}
+				}
+				
+				animales[opcion-1].setEdad(animales[opcion-1].getEdad()+1);
+				
+				System.out.println(animales[opcion-1].getNombre()+" ahora tiene "+animales[opcion-1].getEdad()+" anyos");
+				
+				System.out.println("Pulse intro para volver al MENU PRINCIPAL");
+				texto = scString.nextLine();
+
+				
 				break;
 			case 3:
-				System.out.println("HAS ELEGIDO LA OPCIÓN 4");				
+				System.out.println("[4] CAMBIAR PESO ANIMAL");		
+			
+				for (int i=0; i<animales.length; i++) {
+					
+					if (animales[i].isEstado()) {
+						System.out.println((i+1)+".-"+animales[i].getNombre() + " peso: "+animales[i].getPeso());
+					}
+					
+				}
+				
+				while (true) {
+					
+					do {
+					System.out.println("Elija el animal");
+					opcion = introducirNumero(opcion);
+					}while(opcion<1 || opcion>animales.length);
+					
+					if (animales[opcion - 1].isEstado()) {
+						break;
+					}
+				}
+				
+				
+				
 				break;
 			case 4:
 				System.out.println("HAS ELEGIDO LA OPCIÓN 5");

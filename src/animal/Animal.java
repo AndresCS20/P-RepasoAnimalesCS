@@ -17,6 +17,7 @@ public class Animal {
 			return nombre + ": peso:" + peso + ", edad:" + edad;
 		}	
 		
+		
 	
 	//----Constructores----//
 	
