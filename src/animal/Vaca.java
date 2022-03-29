@@ -5,7 +5,8 @@ public class Vaca extends Animal {
 	//----Atributos----//
 	
 	private String uso="";
-	public static int numVacas=3;
+	public static int numVacasLeche=0;
+	private double lecheVaca=0;
 
 	
 	//----Metodos----//
@@ -32,10 +33,17 @@ public class Vaca extends Animal {
 	public void setUso(String uso) {
 		this.uso = uso;
 	}
-	public static int getNumVacas() {
-		return numVacas;
+	public static int getNumVacasLeche() {
+		return numVacasLeche;
 	}
-	public static void setNumVacas(int numVacas) {
-		Vaca.numVacas = numVacas;
+	public static void setNumVacasLeche(int numVacasLeche) {
+		Vaca.numVacasLeche = numVacasLeche;
+	}
+	public double getLecheVaca() {
+		return lecheVaca;
+	}
+	public void setLecheVaca(double lecheVaca) {
+		this.lecheVaca = lecheVaca;
 	}	
+	
 }

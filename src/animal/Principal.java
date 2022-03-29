@@ -2,14 +2,15 @@ package animal;
 
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Principal {
 	public static Scanner scString = new Scanner(System.in);
 	public static Scanner scInt = new Scanner(System.in);
 	
 	public static Vaca vaca0=new Vaca("Romera", 230.5, 3, true, "Leche");
-	public static Vaca vaca1=new Vaca("Facunda", 205.2, 3, true, "Carne");
-	public static Vaca vaca2=new Vaca("Fina", 245.4, 4, true, "Leche");
+	public static Vaca vaca1=new Vaca("Facunda", 205.2, 3, true, "Leche");
+	public static Vaca vaca2=new Vaca("Fina", 245.4, 4, true, "Carne");
 	public static Vaca vacas[]= {vaca0,vaca1,vaca2};
 	
 	public static Cerdo cerdo0=new Cerdo("Petro", 90.2, 2, true, "Rosado");
@@ -23,13 +24,21 @@ public class Principal {
 	public static Animal animales[]= {vaca0,vaca1,vaca2,cerdo0,oveja0,oveja1,oveja2};
 
 	public static void main(String[] args) {
-		
+		Random r=new Random();
 		String texto=null;
 		int opcion=0;
 		double decimal=0;
 		int edad=0;
 		double pesoanterior=0;
 		double pesonuevo=0;
+		double stockleche=0;
+		double randomleche=0;
+		int df=0;
+		while (df>30) {
+			randomleche=r.nextInt(6)+3;
+			System.out.println(randomleche);
+		df++;
+		}
 		while (true) {
 			do {
 			opcion=0;
@@ -68,24 +77,31 @@ public class Principal {
 				adquirirCerdo(opcion, decimal);
 				break;
 			case 6:
-				texto=null;				
-				if (Animal.getNumAnimales()>0) {
-
-				System.out.println("[7] LISTADO DE ANIMALES COMPLETO");
-				for (int i = 0; i < animales.length; i++) {
-					if (animales[i].isEstado()) {
-					System.out.println(animales[i]);
-
-
-					}
-				}
-		}
-				else System.err.println("ERROR: No hay ningún animal vivo.");
-					System.out.println("Pulse intro para volver al MENU PRINCIPAL");
-					texto = scString.nextLine();
+				mostrarListadoCompleto();
 				break;
 			case 7:
-				System.out.println("HAS ELEGIDO LA OPCIÓN 8");
+				if (Animal.getNumAnimales()>0) {
+					
+					System.out.println("[8] OBTENCION DE LECHE");
+					for (int i = 0; i < vacas.length; i++) {
+						if (vacas[i].isEstado() && vacas[i].getUso().equalsIgnoreCase("Leche")) {
+
+							
+							Vaca.numVacasLeche++;
+							vacas[i].setLecheVaca(numAleatorio());
+							stockleche=stockleche+vacas[i].getLecheVaca();
+							stockleche=Math.round(stockleche*100.0)/100.0;
+							System.out.println("Leche Obtenida por "+ vacas[i].getNombre() + ": "+vacas[i].getLecheVaca()+" l");
+
+						}
+						
+					}						
+					if (Vaca.numVacasLeche==0)System.err.println("No hay vacas para obtener leche");
+					System.out.println("STOCK DE LECHE "+stockleche);
+			}
+					else System.err.println("ERROR: No hay ninguna vaca viva vivo.");
+						System.out.println("Pulse intro para volver al MENU PRINCIPAL");
+						texto = scString.nextLine();
 				break;
 			case 8:
 				System.out.println("HAS ELEGIDO LA OPCIÓN 9");
@@ -110,6 +126,25 @@ public class Principal {
 		
 		
 		
+	}
+
+	private static void mostrarListadoCompleto() {
+		String texto;
+		texto=null;				
+		if (Animal.getNumAnimales()>0) {
+
+		System.out.println("[7] LISTADO DE ANIMALES COMPLETO");
+		for (int i = 0; i < animales.length; i++) {
+			if (animales[i].isEstado()) {
+			System.out.println(animales[i]);
+
+
+			}
+		}
+}
+		else System.err.println("ERROR: No hay ningún animal vivo.");
+			System.out.println("Pulse intro para volver al MENU PRINCIPAL");
+			texto = scString.nextLine();
 	}
 
 	private static void adquirirCerdo(int opcion, double decimal) {
@@ -353,6 +388,18 @@ public class Principal {
 		return decimal;
 	}
 	
-	
+	public static double numAleatorio() {
+		Random r=new Random();
+		double randomleche=0;
+		double decimal=0;
+		
+		randomleche=r.nextInt(6)+3;	
+		if (randomleche!=8) {
+		decimal=r.nextInt(10)+0;
+		decimal=decimal/10;
+		randomleche=randomleche+decimal;
+		}
+		return randomleche;
+	}
 
 }
