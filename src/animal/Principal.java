@@ -22,7 +22,8 @@ public class Principal {
 	public static Oveja ovejas[]= {oveja0,oveja1,oveja2};
 	
 	public static Animal animales[]= {vaca0,vaca1,vaca2,cerdo0,oveja0,oveja1,oveja2};
-
+	public static  double beneficioventacumulada=0;
+	public static 	double beneficioventa=0;
 	public static void main(String[] args) {
 		Random r=new Random();
 		String texto=null;
@@ -33,6 +34,7 @@ public class Principal {
 		double pesonuevo=0;
 		double stockleche=0;
 		double randomleche=0;
+		
 		int df=0;
 		while (df>30) {
 			randomleche=r.nextInt(6)+3;
@@ -53,7 +55,6 @@ public class Principal {
 			System.out.println("8.-Obtencion de leche");
 			System.out.println("9.-Venta de Leche");
 			System.out.println("10.-TERMINAR PROGRAMA");
-
 			System.out.println("Introduce un numero (1-10).");
 			opcion = introducirNumeroEntero(opcion);
 			
@@ -80,65 +81,41 @@ public class Principal {
 				mostrarListadoCompleto();
 				break;
 			case 7:
-				if (Animal.getNumAnimales()>0) {
-					
-					System.out.println("[8] OBTENCION DE LECHE");
-					for (int i = 0; i < vacas.length; i++) {
-						if (vacas[i].isEstado() && vacas[i].getUso().equalsIgnoreCase("Leche")) {
-
-							
-							Vaca.numVacasLeche++;
-							vacas[i].setLecheVaca(numAleatorio());
-							stockleche=stockleche+vacas[i].getLecheVaca();
-							stockleche=Math.round(stockleche*100.0)/100.0;
-							System.out.println("Leche Obtenida por "+ vacas[i].getNombre() + ": "+vacas[i].getLecheVaca()+" l");
-
-						}
-						
-					}						
-					if (Vaca.numVacasLeche==0)System.err.println("No hay vacas para obtener leche");
-					System.out.println("STOCK DE LECHE "+stockleche);
-			}
-					else System.err.println("ERROR: No hay ninguna vaca viva vivo.");
-						System.out.println("Pulse intro para volver al MENU PRINCIPAL");
-						texto = scString.nextLine();
+				stockleche = obtencionLeche(stockleche);
 				break;
 			case 8:
-				System.out.println("HAS ELEGIDO LA OPCIÓN 9");
+				stockleche = ventadeLeche(decimal, stockleche);
 				break;
 			case 9:
 				break;
 			default:
 				System.err.println("ERROR: Numero Introducido no corresponde con ninguna de las opciones disponibles.");
 				break;
-			}
-			
+				}
 			}while (opcion<0 || opcion>10);		
 			
+			beneficioventacumulada+=beneficioventa;
+			
 			if (opcion==10) {
-				
 				System.out.println("\n|X|Has elegido terminar el programa...");
 				break;
-				
 				}
-
 		}
-		
-		
-		
 	}
+	
 
-	private static void mostrarListadoCompleto() {
+	// [1] Mostrar Listado de Animales
+	
+	private static void listadoAnimales() {
 		String texto;
 		texto=null;				
 		if (Animal.getNumAnimales()>0) {
 
-		System.out.println("[7] LISTADO DE ANIMALES COMPLETO");
+		System.out.println("[1] LISTADO DE ANIMALES");
 		for (int i = 0; i < animales.length; i++) {
 			if (animales[i].isEstado()) {
 			System.out.println(animales[i]);
-
-
+			System.out.println(animales[i].getNombre() + ": peso:" + animales[i].getPeso() + ", edad:" + animales[i].getEdad());
 			}
 		}
 }
@@ -146,58 +123,58 @@ public class Principal {
 			System.out.println("Pulse intro para volver al MENU PRINCIPAL");
 			texto = scString.nextLine();
 	}
-
-	private static void adquirirCerdo(int opcion, double decimal) {
+	
+	//[2] Mostrar Tipo Animal 
+	
+	private static int mostrarTipoAnimal(int opcion) {
 		String texto;
-		int edad;
-		double pesonuevo;
-		System.out.println("[6] ADQUIRIR NUEVO CERDO");
-		if (!cerdos[0].isEstado()) {
-			texto="";
-			do {
-			System.out.println("Introduce un nombre");
-			texto=scString.nextLine();}
-			while (texto=="");
-			cerdos[0].setNombre(texto);
-			
-			pesonuevo=0;
-			do {
-				System.out.println("Introduce el peso");
-				pesonuevo = introducirNumeroDecimal(decimal);
-			}while(pesonuevo<0);
-			
-			cerdos[0].setPeso(pesonuevo);
-			
-			do {
-				System.out.println("Introduce la Edad");
-				edad = introducirNumeroEntero(opcion);
-			}while(edad<0);
-			cerdos[0].setEdad(edad);
-			cerdos[0].setEstado(true);
-			
-			texto="";
-			do {
-				System.out.println("Introduce el color del pelo");
-			texto=scString.nextLine();}
-			while (texto=="");
-			cerdos[0].setColorPelaje(texto);
-
-		}
-		else System.err.println("ERROR: Ya hay un cerdo vivo.");
-		System.out.println("Pulse intro para volver al MENU PRINCIPAL");
-		texto = scString.nextLine();
-	}
-
-	private static int marcarAnimalMuerto(int opcion) {
-		String texto;
-		System.out.println("[5] MARCAR ANIMAL COMO MUERTO");
+		texto=null;
 		if (Animal.getNumAnimales()>0) {
-
+		System.out.println("[2] MOSTRAR TIPO DE ANIMAL");
+		for (int i=0; i<animales.length; i++) {
+			if (animales[i].isEstado()) {
+			System.out.println((i+1)+".-"+animales[i].getNombre());
+				}
+		}
+		while (true) {
+			
+			do {
+			System.out.println("Elija el animal");
+			opcion = introducirNumeroEntero(opcion);
+			}while(opcion<1 || opcion>animales.length);
+			
+			if (animales[opcion - 1].isEstado()) {
+				break;
+			}
+		}
 		
+		if (animales[opcion - 1] instanceof Vaca) {
+			System.out.println(animales[opcion - 1].getNombre() + " es una vaca");
+		}
+		if (animales[opcion - 1] instanceof Cerdo) {
+			System.out.println(animales[opcion - 1].getNombre() + " es una cerdo");
+		}
+		if (animales[opcion - 1] instanceof Oveja) {
+			System.out.println(animales[opcion - 1].getNombre() + " es una oveja");
+		}
+		}
+		else System.err.println("ERROR: No hay ningún animal vivo.");
+			System.out.println("Pulse intro para volver al MENU PRINCIPAL");
+			texto = scString.nextLine();
+		return opcion;
+	}
+	
+	//[3] Sumar anyo a un animal
+	
+	private static int sumarAnyoAnimal(int opcion) {
+		String texto;
+		if (Animal.getNumAnimales()>0) {
+		System.out.println("[3] SUMAR ANYO A UN ANIMAL");
+
 		for (int i=0; i<animales.length; i++) {
 			
 			if (animales[i].isEstado()) {
-				System.out.println((i+1)+".-"+animales[i].getNombre());
+				System.out.println((i+1)+".-"+animales[i].getNombre() + " edad: "+animales[i].getEdad());
 			}
 			
 		}
@@ -214,17 +191,18 @@ public class Principal {
 			}
 		}
 		
-		System.out.println("El animal "+animales[opcion-1].getNombre()+" ha muerto.");
-		animales[opcion-1].setEstado(false);
-		Animal.numAnimales--;
-		System.out.println("Quedan "+Animal.getNumAnimales() + " animales vivos");
-		}
+		animales[opcion-1].setEdad(animales[opcion-1].getEdad()+1);
+		
+		System.out.println(animales[opcion-1].getNombre()+" ahora tiene "+animales[opcion-1].getEdad()+" anyos");
+}
 		else System.err.println("ERROR: No hay ningún animal vivo.");
 		System.out.println("Pulse intro para volver al MENU PRINCIPAL");
 		texto = scString.nextLine();
 		return opcion;
 	}
-
+	
+	//[4] Cambiar peso de Animales
+	
 	private static int cambiarPesoAnimal(int opcion, double decimal) {
 		String texto;
 		double pesoanterior;
@@ -274,16 +252,19 @@ public class Principal {
 		texto = scString.nextLine();
 		return opcion;
 	}
+	
+	//[5] Marcar animal como muerto
 
-	private static int sumarAnyoAnimal(int opcion) {
+	private static int marcarAnimalMuerto(int opcion) {
 		String texto;
+		System.out.println("[5] MARCAR ANIMAL COMO MUERTO");
 		if (Animal.getNumAnimales()>0) {
-		System.out.println("[3] SUMAR ANYO A UN ANIMAL");
 
+		
 		for (int i=0; i<animales.length; i++) {
 			
 			if (animales[i].isEstado()) {
-				System.out.println((i+1)+".-"+animales[i].getNombre() + " edad: "+animales[i].getEdad());
+				System.out.println((i+1)+".-"+animales[i].getNombre());
 			}
 			
 		}
@@ -300,64 +281,73 @@ public class Principal {
 			}
 		}
 		
-		animales[opcion-1].setEdad(animales[opcion-1].getEdad()+1);
-		
-		System.out.println(animales[opcion-1].getNombre()+" ahora tiene "+animales[opcion-1].getEdad()+" anyos");
-}
+		System.out.println("El animal "+animales[opcion-1].getNombre()+" ha muerto.");
+		animales[opcion-1].setEstado(false);
+		Animal.numAnimales--;
+		System.out.println("Quedan "+Animal.getNumAnimales() + " animales vivos");
+		}
 		else System.err.println("ERROR: No hay ningún animal vivo.");
 		System.out.println("Pulse intro para volver al MENU PRINCIPAL");
 		texto = scString.nextLine();
 		return opcion;
 	}
+	
+	//[6] Adquirir nuevo cerdo
 
-	private static int mostrarTipoAnimal(int opcion) {
+	private static void adquirirCerdo(int opcion, double decimal) {
 		String texto;
-		texto=null;
-		if (Animal.getNumAnimales()>0) {
-		System.out.println("[2] MOSTRAR TIPO DE ANIMAL");
-		for (int i=0; i<animales.length; i++) {
-			if (animales[i].isEstado()) {
-			System.out.println((i+1)+".-"+animales[i].getNombre());
-				}
-		}
-		while (true) {
+		int edad;
+		double pesonuevo;
+		System.out.println("[6] ADQUIRIR NUEVO CERDO");
+		if (!cerdos[0].isEstado()) {
+			texto="";
+			do {
+			System.out.println("Introduce un nombre");
+			texto=scString.nextLine();}
+			while (texto=="");
+			cerdos[0].setNombre(texto);
+			
+			pesonuevo=0;
+			do {
+				System.out.println("Introduce el peso");
+				pesonuevo = introducirNumeroDecimal(decimal);
+			}while(pesonuevo<0);
+			
+			cerdos[0].setPeso(pesonuevo);
 			
 			do {
-			System.out.println("Elija el animal");
-			opcion = introducirNumeroEntero(opcion);
-			}while(opcion<1 || opcion>animales.length);
+				System.out.println("Introduce la Edad");
+				edad = introducirNumeroEntero(opcion);
+			}while(edad<0);
+			cerdos[0].setEdad(edad);
+			cerdos[0].setEstado(true);
 			
-			if (animales[opcion - 1].isEstado()) {
-				break;
-			}
-		}
-		
-		if (animales[opcion - 1] instanceof Vaca) {
-			System.out.println(animales[opcion - 1].getNombre() + " es una vaca");
-		}
-		if (animales[opcion - 1] instanceof Cerdo) {
-			System.out.println(animales[opcion - 1].getNombre() + " es una cerdo");
-		}
-		if (animales[opcion - 1] instanceof Oveja) {
-			System.out.println(animales[opcion - 1].getNombre() + " es una oveja");
-		}
-		}
-		else System.err.println("ERROR: No hay ningún animal vivo.");
-			System.out.println("Pulse intro para volver al MENU PRINCIPAL");
-			texto = scString.nextLine();
-		return opcion;
-	}
+			texto="";
+			do {
+				System.out.println("Introduce el color del pelo");
+			texto=scString.nextLine();}
+			while (texto=="");
+			cerdos[0].setColorPelaje(texto);
 
-	private static void listadoAnimales() {
+		}
+		else System.err.println("ERROR: Ya hay un cerdo vivo.");
+		System.out.println("Pulse intro para volver al MENU PRINCIPAL");
+		texto = scString.nextLine();
+	}
+	
+	//[7] Mostrar Listado completo de animales
+	
+	private static void mostrarListadoCompleto() {
 		String texto;
 		texto=null;				
 		if (Animal.getNumAnimales()>0) {
 
-		System.out.println("[1] LISTADO DE ANIMALES");
+		System.out.println("[7] LISTADO DE ANIMALES COMPLETO");
 		for (int i = 0; i < animales.length; i++) {
 			if (animales[i].isEstado()) {
 			System.out.println(animales[i]);
-			System.out.println(animales[i].getNombre() + ": peso:" + animales[i].getPeso() + ", edad:" + animales[i].getEdad());
+
+
 			}
 		}
 }
@@ -365,28 +355,100 @@ public class Principal {
 			System.out.println("Pulse intro para volver al MENU PRINCIPAL");
 			texto = scString.nextLine();
 	}
+	
+	//	[8] Obtener leche de Vacas de Leche
+	
+	private static double obtencionLeche(double stockleche) {
+		String texto;
+		if (Animal.getNumAnimales()>0) {
+			
+			System.out.println("[8] OBTENCION DE LECHE");
+			for (int i = 0; i < vacas.length; i++) {
+				if (vacas[i].isEstado() && vacas[i].getUso().equalsIgnoreCase("Leche")) {
+
+					
+					Vaca.numVacasLeche++;
+					vacas[i].setLecheVaca(numAleatorio());
+					stockleche=stockleche+vacas[i].getLecheVaca();
+					stockleche=Math.round(stockleche*100.0)/100.0;
+					System.out.println("Leche Obtenida por "+ vacas[i].getNombre() + ": "+vacas[i].getLecheVaca()+" l");
+
+				}
+				
+			}						
+			if (Vaca.numVacasLeche==0)System.err.println("No hay vacas para obtener leche");
+			System.out.println("STOCK DE LECHE "+stockleche);
+}
+			else System.err.println("ERROR: No hay ninguna vaca viva vivo.");
+				System.out.println("Pulse intro para volver al MENU PRINCIPAL");
+				texto = scString.nextLine();
+		return stockleche;
+	}
+	
+	//[9] Venta de Leche
+
+	private static double ventadeLeche(double decimal, double stockleche) {
+		String texto;
+		if (stockleche>0.1) {
+			double lechepedido=0;
+			System.out.println("[9] VENTA DE LECHE");
+			System.out.println("Leche en Stock: "+stockleche+" l");
+			
+				do {
+					System.out.println("\nCuantra se quiere vender?");
+					lechepedido= introducirNumeroDecimal(decimal);
+					if (lechepedido>stockleche) {
+						System.out.println("ERROR: No hay tanta leche disponible");
+					}
+				}while(lechepedido<0 &&  lechepedido<=stockleche);
+				
+				stockleche-=lechepedido;
+				beneficioventa=lechepedido*0.5;
+				beneficioventacumulada+=beneficioventa;
+				System.out.println("Ganancias por esta venta: "+beneficioventa);
+				System.out.println("Ganancias acumuladas: "+beneficioventacumulada);
+		}
+		else System.err.println("ERROR: No hay suficiente leche para poder vender");
+		System.out.println("Pulse intro para volver al MENU PRINCIPAL");
+		texto = scString.nextLine();
+		return stockleche;
+	}
+
+	//Try-Catch para Double y para Int
 
 	private static int introducirNumeroEntero(int opcion) {
 		String texto;
+		boolean correcto=false;
+		do {
 		try {
 			texto = scString.nextLine();
 			opcion = Integer.valueOf(texto);
+			correcto=true;
 		} catch (NumberFormatException e) {
 			System.err.println("ERROR: No has introducido un numero");
 		}
+		}
+		while (!correcto);
 		return opcion;
 	}
 	
 	private static double introducirNumeroDecimal(double decimal) {
 		String texto;
+		boolean correcto=false;
+		do {
 		try {
 			texto = scString.nextLine();
 			decimal = Double.valueOf(texto);
+			correcto=true;
 		} catch (NumberFormatException e) {
 			System.err.println("ERROR: No has introducido un numero");
 		}
+		}
+		while (!correcto);
 		return decimal;
 	}
+	
+	//Generar numero  aleatorio
 	
 	public static double numAleatorio() {
 		Random r=new Random();
