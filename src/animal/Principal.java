@@ -400,7 +400,7 @@ public class Principal {
 					if (lechepedido>stockleche) {
 						System.out.println("ERROR: No hay tanta leche disponible");
 					}
-				}while(lechepedido<0 &&  lechepedido<=stockleche);
+				}while(lechepedido<0  ||  lechepedido>stockleche);
 				
 				stockleche-=lechepedido;
 				beneficioventa=lechepedido*0.5;
